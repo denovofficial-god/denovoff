@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment by denov</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        header {
+            background: #1976d2;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .payment-methods {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+        }
+        
+        .payment-methods h2 {
+            color: #1976d2;
+            margin-bottom: 20px;
+            font-size: 22px;
+            border-bottom: 2px solid #1976d2;
+            padding-bottom: 10px;
+        }
+        
+        .method {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+        }
+        
+        .method:hover {
+            transform: translateY(-5px);
+        }
+        
+        .method h3 {
+            color: #1976d2;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .method p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 5px;
+            word-break: break-all;
+        }
+        
+        .method .copy-btn {
+            background: #1976d2;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 8px;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        
+        .method .copy-btn:hover {
+            background: #1565c0;
+        }
+        
+        .qris-section {
+            text-align: center;
+        }
+        
+        .qris-section h2 {
+            color: #1976d2;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        
+        .qris-image {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 auto 20px;
+        }
+        
+        .qris-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .channel-section {
+            grid-column: 1 / -1;
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .channel-section h2 {
+            color: #1976d2;
+            margin-bottom: 15px;
+        }
+        
+        .channel-btn {
+            display: inline-block;
+            background: #1976d2;
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .channel-btn:hover {
+            background: #1565c0;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        footer {
+            background: #1976d2;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background: #4caf50;
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Payment Gateway</h1>
+            <p>Lakukan pembayaran dengan metode di bawah ini</p>
+        </header>
+        
+        <div class="content">
+            <div class="payment-methods">
+                <h2>Transfer Bank & E-Wallet</h2>
+                
+                <div class="method">
+                    <h3><i class="fas fa-mobile-alt"></i> DANA</h3>
+                    <p class="account-number">087886847205</p>
+                    <p>a.n: DENOV</p>
+                    <button class="copy-btn" onclick="copyToClipboard('087886847205', 'Nomor DANA')">Salin Nomor</button>
+                </div>
+                
+                <div class="method">
+                    <h3><i class="fas fa-user"></i> Nama Penerima</h3>
+                    <p>DENOV</p>
+                    <button class="copy-btn" onclick="copyToClipboard('DENOV', 'Nama Penerima')">Salin Nama</button>
+                </div>
+            </div>
+            
+            <div class="qris-section">
+                <h2>QRIS</h2>
+                <div class="qris-image">
+                    <img src="https://files.catbox.moe/3pjikj.jpg" alt="QR Code Payment">
+                </div>
+                <p>Scan QR code di atas untuk pembayaran</p>
+            </div>
+            
+            <div class="channel-section">
+                <h2>Saluran Komunikasi</h2>
+                <a href="https://whatsapp.com/channel/0029Vb5eKKwEQIamxkCKd224" class="channel-btn" target="_blank">
+                    <i class="fab fa-whatsapp"></i> WhatsApp Channel
+                </a>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2023 Payment Gateway. Semua hak dilindungi.</p>
+        </footer>
+    </div>
+    
+    <div class="notification" id="notification">Teks berhasil disalin!</div>
+
+    <script>
+        function copyToClipboard(text, type) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            const notification = document.getElementById('notification');
+            notification.textContent = `${type} berhasil disalin!`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
